@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 const NavLink = ({ value, trackBar }) => {
   const location = useLocation();
 
-  const activeRef = useRef();
+  const linkRef = useRef();
 
   const currentPath = location.pathname;
 
@@ -23,8 +23,8 @@ const NavLink = ({ value, trackBar }) => {
   function activePath() {
     if (currentPath === `/${value}`) {
       changeTrackState(
-        activeRef.current.offsetLeft + "px",
-        activeRef.current.clientWidth + "px"
+        linkRef.current.offsetLeft + "px",
+        linkRef.current.clientWidth + "px"
       );
     }
   }
@@ -67,7 +67,7 @@ const NavLink = ({ value, trackBar }) => {
       <li
         onMouseEnter={mouseEnterFun}
         onMouseLeave={mouseLeaveFun}
-        ref={activeRef}
+        ref={linkRef}
       >
         {value === "" ? "home" : value}
       </li>
