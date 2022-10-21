@@ -2,6 +2,7 @@
   transition: all 500ms ease-in-out;
   width: 85%;
   margin-inline: auto;
+  padding-top: 20px;
 }
 @media screen and (max-width: 1150px) {
   .header {
@@ -21,7 +22,7 @@
   display: flex;
   align-items: baseline;
   padding-bottom: 70px;
-  margin-top: 20px;
+
   justify-content: space-between;
   height: 40px;
   min-width: 100%;
@@ -95,6 +96,7 @@
   width: 0px;
   opacity: 0;
   transition: all 300ms ease-in-out;
+  cursor: pointer;
 }
 .nav__toggler > span {
   display: block;
@@ -107,9 +109,10 @@
 .nav__checkbox {
   position: absolute;
   width: 30px;
-  height: 30px;
+  height: 32px;
   opacity: 0;
-  z-index: 10;
+  z-index: 100;
+  cursor: pointer;
 }
 .nav__checkbox:checked + .nav__toggler > span:nth-child(1) {
   rotate: 45deg;
@@ -157,6 +160,9 @@
   transition: all 300ms ease-in-out;
   color: var(--fc-body);
   text-transform: capitalize;
+}
+.nav__smallDevice li:hover {
+  color: var(--fc-heading);
 }
 @media screen and (max-width: 850px) {
   .nav__smallDevice {
