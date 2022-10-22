@@ -32,6 +32,10 @@
   width: 20%;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 300ms ease-in-out;
+}
+.thumbnail > img:hover {
+  scale: 1.03;
 }
 @media screen and (max-width: 980px) {
   .product {

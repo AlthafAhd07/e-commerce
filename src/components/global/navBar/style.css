@@ -86,7 +86,7 @@
 
 @media screen and (max-width: 850px) {
   .logo {
-    transform: translateX(calc(12% + 30px));
+    transform: translateX(60px);
   }
 }
 .nav__toggler {
