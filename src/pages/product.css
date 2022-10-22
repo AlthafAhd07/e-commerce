@@ -1,4 +1,5 @@
 .product {
+  display: none;
   display: flex;
   width: 85%;
   height: calc(100vh - 91px);
@@ -45,6 +46,7 @@
 }
 .productData {
   flex: 0.5;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -98,6 +100,7 @@
 .AddToCart {
   display: flex;
   gap: 25px;
+  width: 100%;
 }
 .AddToCart > div {
   background-color: var(--clr-nuetral-200);
@@ -136,5 +139,16 @@
   .productData {
     margin-block: 50px;
     margin-inline: auto;
+    width: 100%;
+  }
+
+  .AddToCart {
+    justify-content: space-between;
+  }
+  .AddToCart > div {
+    width: 30%;
+  }
+  .CartBtn {
+    width: 60%;
   }
 }
