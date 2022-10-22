@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./product.css";
 import { ReactComponent as CartIcon } from "../images/shopping-cart-icon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../features/userCart/cartSlice";
+import { addToCart } from "../features/userCart/cartSlice.js";
 const imageData = {
   // primaryColor: "green",
   images: [
