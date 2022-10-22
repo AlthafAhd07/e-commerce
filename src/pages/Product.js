@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./product.css";
 import { ReactComponent as CartIcon } from "../images/shopping-cart-icon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, selectCart } from "../features/userCart/cartSlice";
+import { addToCart } from "../features/userCart/cartSlice";
 const imageData = {
   // primaryColor: "green",
   images: [
@@ -38,7 +38,7 @@ const Product = () => {
   const [ItemCount, setItemCount] = useState(1);
 
   const dispatch = useDispatch();
-  const userCart = useSelector(selectCart);
+  const userCart = useSelector((state) => state.userCart);
   const productId = "123456";
 
   const ProduxtAlreadyExists = userCart.products.some(

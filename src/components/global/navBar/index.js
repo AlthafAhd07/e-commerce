@@ -4,11 +4,10 @@ import { ReactComponent as ProfileLogo } from "../../../images/my-account-icon.s
 import "./style.css";
 import NavLink from "./NavLink";
 import { useSelector } from "react-redux";
-import { selectCart } from "../../../features/userCart/cartSlice";
 
 const NavBar = () => {
   const trackBar = useRef();
-  const userCart = useSelector(selectCart);
+  const userCart = useSelector((state) => state.userCart);
 
   return (
     <header className="header">
