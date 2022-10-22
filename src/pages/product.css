@@ -127,3 +127,14 @@
   color: var(--clr-nuetral-100);
   box-shadow: hsl(27, 100%, 71%) 0px 5px 18px;
 }
+
+@media screen and (max-width: 910px) {
+  .product {
+    flex-direction: column;
+    height: auto;
+  }
+  .productData {
+    margin-block: 50px;
+    margin-inline: auto;
+  }
+}
