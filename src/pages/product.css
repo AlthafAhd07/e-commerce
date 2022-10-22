@@ -1,9 +1,10 @@
 .product {
   display: flex;
   width: 85%;
+  height: calc(100vh - 91px);
   margin-inline: auto;
-  margin-top: 50px;
   transition: all 300ms ease-in-out;
+  overflow: hidden;
 }
 .imageGallery {
   flex: 0.5;
@@ -58,11 +59,12 @@
   color: var(--fc-heading);
   font-weight: var(--fw-700);
   font-size: var(--fs-700);
-  width: 80%;
+  width: 320px;
   margin-bottom: 15px;
 }
 .productDescription {
   font-size: var(--fs-300);
+  width: 450px;
 }
 .price {
   display: flex;
@@ -77,6 +79,7 @@
   font-weight: var(--fw-700);
   margin-right: 8px;
   color: var(--fc-heading);
+  font-size: var(--fs-500);
 }
 .price__discounted > span:last-child {
   background-color: hsl(27, 100%, 87%);
@@ -88,21 +91,21 @@
   color: var(--clr-primary-500);
 }
 .price__exact {
-  font-size: var(--fs-300);
+  font-size: var(--fs-400);
   font-weight: var(--fw-700);
   text-decoration: line-through;
 }
 .AddToCart {
   display: flex;
-  gap: 15px;
+  gap: 25px;
 }
 .AddToCart > div {
   background-color: var(--clr-nuetral-200);
   border-radius: 5px;
   color: var(--fc-heading);
   font-weight: var(--fw-500);
-  width: 110px;
-  height: 35px;
+  width: 150px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -119,7 +122,7 @@
   border: none;
   background-color: var(--clr-primary-500);
   border-radius: 5px;
-  width: 200px;
+  width: 230px;
   cursor: pointer;
   color: var(--clr-nuetral-100);
   box-shadow: hsl(27, 100%, 71%) 0px 5px 18px;

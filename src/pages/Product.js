@@ -31,7 +31,7 @@ const Product = () => {
         <div className="price">
           <p className="price__discounted">
             <span>$125.00</span>
-            <span className="discont">50%</span>
+            <span className="discount">50%</span>
           </p>
           <p className="price__exact">$250.00</p>
         </div>
