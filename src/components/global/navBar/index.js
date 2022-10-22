@@ -3,9 +3,12 @@ import { ReactComponent as CartIcon } from "../../../images/shopping-cart-icon.s
 import { ReactComponent as ProfileLogo } from "../../../images/my-account-icon.svg";
 import "./style.css";
 import NavLink from "./NavLink";
+import { useSelector } from "react-redux";
+import { selectCart } from "../../../features/cart/counterSlice";
 
 const NavBar = () => {
   const trackBar = useRef();
+  const userCart = useSelector(selectCart);
 
   return (
     <header className="header">
@@ -32,8 +35,9 @@ const NavBar = () => {
           <li>About</li>
         </ul>
         <ul className="nav__links">
-          <li>
+          <li className="cartIcon">
             <CartIcon stroke="black" fill="white" className="nav__icon" />
+            {userCart.productCount > 0 && <p>{userCart.productCount}</p>}
           </li>
           <li>
             <ProfileLogo className="nav__icon profilePic" />

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./product.css";
-// import { useParams } from "react-router-dom";
 import { ReactComponent as CartIcon } from "../images/shopping-cart-icon.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, selectCart } from "../features/cart/counterSlice";
 const imageData = {
   // primaryColor: "green",
   images: [
@@ -34,12 +35,19 @@ const imageData = {
 const Product = () => {
   // const { id } = useParams();
   const [mainImgId, setMainImgId] = useState(0);
+  const [ItemCount, setItemCount] = useState(1);
 
+  const dispatch = useDispatch();
+  const userCart = useSelector(selectCart);
+  const productId = "123456";
+
+  const ProduxtAlreadyExists = userCart.products.some(
+    (item) => item.productId === productId
+  );
   useEffect(() => {
     const getMainImagesForMobile = setTimeout(() => {
       imageData.images.map((image, index) => {
         if (index !== 0) {
-          console.log("hi i am running");
           new Image().src = image.img;
         }
         return null;
@@ -47,6 +55,12 @@ const Product = () => {
     }, [500]);
     return () => clearTimeout(getMainImagesForMobile);
   }, []);
+  function handleAddToCart() {
+    if (ProduxtAlreadyExists) {
+      return;
+    }
+    dispatch(addToCart({ productId, count: ItemCount }));
+  }
 
   return (
     <div className="product">
@@ -101,27 +115,41 @@ const Product = () => {
               style={{
                 color: imageData?.primaryColor,
               }}
+              onClick={() =>
+                setItemCount((old) => {
+                  if (old > 1) {
+                    return old - 1;
+                  }
+                  return old;
+                })
+              }
             >
               -
             </button>
-            0
+            {ItemCount}
             <button
               className="CartIncBtn"
               style={{
                 color: imageData?.primaryColor,
               }}
+              onClick={() => setItemCount((old) => old + 1)}
             >
               +
             </button>
           </div>
           <button
             style={{
-              backgroundColor: imageData?.primaryColor,
-              boxShadow: `${imageData?.primaryColor} 0px 5px 18px`,
+              backgroundColor:
+                imageData?.primaryColor ||
+                (ProduxtAlreadyExists && "rgb(0 255 58)"),
+              boxShadow:
+                ProduxtAlreadyExists && `rgb(58 243 100 / 49%) 0px 2px 8px 0px`,
             }}
+            onClick={handleAddToCart}
             className="CartBtn"
           >
-            <CartIcon className="cart__icon" fill="white" /> Add to cart
+            <CartIcon className="cart__icon" fill="white" />
+            {ProduxtAlreadyExists ? "Added to Card" : "Add to cart"}
           </button>
         </div>
       </div>
