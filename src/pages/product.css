@@ -141,6 +141,9 @@
     margin-inline: auto;
     width: 100%;
   }
+  .productDescription {
+    width: 100%;
+  }
 
   .AddToCart {
     justify-content: space-between;
