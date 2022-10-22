@@ -4,7 +4,7 @@ import { ReactComponent as ProfileLogo } from "../../../images/my-account-icon.s
 import "./style.css";
 import NavLink from "./NavLink";
 import { useSelector } from "react-redux";
-import { selectCart } from "../../../features/cart/counterSlice";
+import { selectCart } from "../../../features/userCart/cartSlice";
 
 const NavBar = () => {
   const trackBar = useRef();
