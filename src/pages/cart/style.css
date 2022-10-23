@@ -22,6 +22,7 @@
   display: flex;
   justify-content: space-evenly;
 }
+
 @media screen and (max-width: 1150px) {
   .cart {
     width: 95%;
