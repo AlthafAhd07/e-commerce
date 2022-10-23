@@ -20,7 +20,7 @@ const CartItem = () => {
             <IncDecCounter ItemCount={ItemCount} setItemCount={setItemCount} />
           </div>
           <div className="total">
-            <pre>Total : </pre> $125
+            <pre>Total : </pre> <span>$125</span>
           </div>
         </div>
       </div>
