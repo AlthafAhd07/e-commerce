@@ -4,10 +4,12 @@ import { ReactComponent as ProfileLogo } from "../../../images/my-account-icon.s
 import "./style.css";
 import NavLink from "./NavLink";
 import { useSelector } from "react-redux";
+import { selectCart } from "../../../features/userCart/cartSlice.js";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const trackBar = useRef();
-  const userCart = useSelector((state) => state.userCart);
+  const userCart = useSelector(selectCart);
 
   return (
     <header className="header">
@@ -34,10 +36,12 @@ const NavBar = () => {
           <li>About</li>
         </ul>
         <ul className="nav__links">
-          <li className="cartIcon">
-            <CartIcon stroke="black" fill="white" className="nav__icon" />
-            {userCart.productCount > 0 && <p>{userCart.productCount}</p>}
-          </li>
+          <Link to="/cart/itsTheId">
+            <li className="cartIcon">
+              <CartIcon stroke="black" fill="white" className="nav__icon" />
+              {userCart.productCount > 0 && <p>{userCart.productCount}</p>}
+            </li>
+          </Link>
           <li>
             <ProfileLogo className="nav__icon profilePic" />
           </li>

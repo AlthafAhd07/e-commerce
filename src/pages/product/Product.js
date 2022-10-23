@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./product.css";
-import { ReactComponent as CartIcon } from "../images/shopping-cart-icon.svg";
+import { ReactComponent as CartIcon } from "../../images/shopping-cart-icon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../features/userCart/cartSlice.js";
+import { addToCart, selectCart } from "../../features/userCart/cartSlice.js";
+import IncDecCounter from "../../components/global/IncDecCount/Index";
 const imageData = {
   // primaryColor: "green",
   images: [
@@ -38,7 +39,7 @@ const Product = () => {
   const [ItemCount, setItemCount] = useState(1);
 
   const dispatch = useDispatch();
-  const userCart = useSelector((state) => state.userCart);
+  const userCart = useSelector(selectCart);
   const productId = "123456";
 
   const ProduxtAlreadyExists = userCart.products.some(
@@ -109,34 +110,7 @@ const Product = () => {
           <p className="price__exact">$250.00</p>
         </div>
         <div className="AddToCart">
-          <div>
-            <button
-              className="CartDecBtn"
-              style={{
-                color: imageData?.primaryColor,
-              }}
-              onClick={() =>
-                setItemCount((old) => {
-                  if (old > 1) {
-                    return old - 1;
-                  }
-                  return old;
-                })
-              }
-            >
-              -
-            </button>
-            {ItemCount}
-            <button
-              className="CartIncBtn"
-              style={{
-                color: imageData?.primaryColor,
-              }}
-              onClick={() => setItemCount((old) => old + 1)}
-            >
-              +
-            </button>
-          </div>
+          <IncDecCounter ItemCount={ItemCount} setItemCount={setItemCount} />
           <button
             style={{
               backgroundColor:

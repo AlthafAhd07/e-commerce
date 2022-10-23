@@ -1,0 +1,86 @@
+.cart__left {
+  flex: 0.6;
+  background-color: #f6f6f8;
+  overflow: hidden;
+  transition: all 500ms ease-in-out;
+}
+.cart__right {
+  background-color: blue;
+  flex: 0.3;
+  transition: all 500ms ease-in-out;
+}
+
+@media screen and (max-width: 1440px) {
+  .cart__left {
+    flex: 0.67;
+  }
+  .cart__right {
+    flex: 0.3;
+  }
+}
+
+.cart__item {
+  background-color: #ffffff;
+  margin: 10px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+}
+@media screen and (max-width: 700px) {
+  .cart__item {
+    height: 130px;
+  }
+  .cart__item > img {
+    max-width: 105px !important;
+    max-height: 105px !important;
+  }
+}
+
+.cart__item > img {
+  flex: 0.2;
+  max-width: 140px;
+  max-height: 140px;
+  margin: auto;
+  transition: all 500ms ease-in-out;
+  margin-inline: 9px;
+}
+
+.item__description {
+  flex: 0.3;
+  display: inline-block;
+  height: 90%;
+  overflow: hidden;
+}
+
+.item__otherData {
+  flex: 0.5;
+  display: grid;
+  grid-template-areas: "price counter total";
+  grid-auto-columns: 1fr;
+  transition: all 500ms ease-in-out;
+}
+.item__otherData > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.price {
+  grid-area: price;
+}
+.quantity {
+  grid-area: counter;
+}
+.total {
+  grid-area: total;
+}
+@media screen and (max-width: 700px) {
+  .item__otherData {
+    grid-template-areas: "price counter counter" "total total total";
+  }
+  .item__description {
+    height: 80%;
+  }
+  .total {
+    margin-top: 5px;
+  }
+}
