@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
-const Right = () => {
+const Right = ({ fullTotal }) => {
+  const [delivery, setDelivery] = useState(5);
+  const itemCount = 0;
   return (
     <div className="cart__right">
       <h1 className="cart__summaryTitle">Order Summary</h1>
       <div className="cart__other">
         <div className="ItemCountPrice">
-          <span>3 ITEMS</span> <span>$457</span>
+          <span>
+            {itemCount} {itemCount > 1 ? "ITEMS" : "ITEM"}
+          </span>
+          <span>${fullTotal}</span>
         </div>
         <div className="ItemShippingOption">
           <p>SHIPPING</p>
-          <select>
-            <option value="">Standart delivery - $5</option>
-            <option value="">Fast delivery - $15</option>
+          <select onInput={(e) => setDelivery(e.target.value)}>
+            <option value="5">Standart delivery - $5</option>
+            <option value="15">Fast delivery - $15</option>
           </select>
         </div>
         <div className="item__promoCode">
@@ -25,15 +30,15 @@ const Right = () => {
       <div className="cart__total">
         <div className="ItemCountPrice">
           <span>SUBTOTAL</span>
-          <span>$300</span>
+          <span>${fullTotal}</span>
         </div>
         <div className="ItemCountPrice">
           <span>DELIVERY</span>
-          <span>$3</span>
+          <span>${delivery}</span>
         </div>
         <div className="ItemCountPrice">
           <span>TOTAL</span>
-          <span>$303</span>
+          <span>${parseFloat(delivery) + parseFloat(fullTotal)} </span>
         </div>
         <button>CHECKOUT</button>
       </div>

@@ -20,7 +20,11 @@ const IncDecCounter = ({ ItemCount, setItemCount }) => {
       {ItemCount || 1}
       <button
         className="CartIncBtn"
-        onClick={() => setItemCount((old) => old + 1)}
+        onClick={() =>
+          setItemCount((old) => {
+            return old + 1;
+          })
+        }
       >
         +
       </button>

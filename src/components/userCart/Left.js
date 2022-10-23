@@ -1,13 +1,13 @@
 import React from "react";
 import CartItem from "./CartItem";
 import "./style.css";
-const Left = () => {
+const Left = ({ setFullTotal }) => {
   return (
     <div className="cart__left">
-      <CartItem />
-      <CartItem />
-      <CartItem />
-      <CartItem />
+      <CartItem setFullTotal={setFullTotal} />
+      <CartItem setFullTotal={setFullTotal} />
+      <CartItem setFullTotal={setFullTotal} />
+      <CartItem setFullTotal={setFullTotal} />
     </div>
   );
 };

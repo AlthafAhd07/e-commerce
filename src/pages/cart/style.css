@@ -3,7 +3,8 @@
   flex-direction: column;
   width: 85%;
   margin-inline: auto;
-  margin-top: 20px;
+  margin-block: 20px;
+  padding-bottom: 40px;
   overflow: hidden;
   transition: all 500ms ease-in-out;
 }

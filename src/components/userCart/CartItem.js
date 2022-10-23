@@ -1,9 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import IncDecCounter from "../../components/global/IncDecCount/Index";
 import TestImg from "../../images/image-product-1-thumbnail.jpg";
 
-const CartItem = () => {
-  const [ItemCount, setItemCount] = useState(1);
+const CartItem = ({ setFullTotal }) => {
+  const [itemCount, setItemCount] = useState(1);
+  const oldItemCount = useRef(itemCount);
+  const price = 23;
+  useEffect(() => {
+    setFullTotal((old) => {
+      if (oldItemCount.current < itemCount) {
+        return old + price;
+      } else if (oldItemCount.current > itemCount) {
+        return old - price;
+      } else {
+        return old;
+      }
+    });
+
+    oldItemCount.current = itemCount;
+    // eslint-disable-next-line
+  }, [itemCount]);
 
   return (
     <div className="cart__item">
@@ -15,12 +31,16 @@ const CartItem = () => {
           voluptates. Iure, optio consectetur? Adipisci veniam e nihil nostrum.
         </div>
         <div className="item__otherData">
-          <div className="price">$25</div>
+          <div className="price">{price}</div>
           <div className="quantity">
-            <IncDecCounter ItemCount={ItemCount} setItemCount={setItemCount} />
+            <IncDecCounter
+              ItemCount={itemCount}
+              setItemCount={setItemCount}
+              price={price}
+            />
           </div>
           <div className="total">
-            <pre>Total : </pre> <span>$125</span>
+            <pre>Total : </pre> <span>{price * itemCount}</span>
           </div>
         </div>
       </div>

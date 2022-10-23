@@ -111,6 +111,7 @@
   .item__otherData {
     flex: 1;
     grid-template-areas: "price counter counter" "total total total";
+    grid-template-rows: 45px 1fr;
   }
   .item__description {
     display: none;
@@ -132,11 +133,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    margin-top: 10px;
+    margin-bottom: 5px;
   }
   .total {
-    margin-top: 0;
-    margin-bottom: 5px;
+    margin-top: 5px;
+    justify-content: flex-start;
   }
 }
 .cart__summaryTitle {
