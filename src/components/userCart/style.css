@@ -44,6 +44,11 @@
   transition: all 500ms ease-in-out;
   margin-inline: 9px;
 }
+.wrapper__smDevice {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
 
 .item__description {
   flex: 0.3;
@@ -53,7 +58,7 @@
 }
 
 .item__otherData {
-  flex: 0.5;
+  flex: 0.7;
   display: grid;
   grid-template-areas: "price counter total";
   grid-auto-columns: 1fr;
@@ -72,15 +77,49 @@
 }
 .total {
   grid-area: total;
+  display: flex;
+  align-items: center;
 }
+.total > pre {
+  color: black;
+  font-size: var(--fs-500);
+  position: relative;
+  bottom: 1.1px;
+  font-weight: var(--fw-500);
+}
+.item__title {
+  display: none;
+  font-size: var(--fs-600);
+  font-weight: var(--fw-500);
+  color: var(--fc-heading);
+  flex: 1;
+}
+
 @media screen and (max-width: 700px) {
   .item__otherData {
+    flex: 1;
     grid-template-areas: "price counter counter" "total total total";
   }
   .item__description {
-    height: 80%;
+    display: none;
   }
   .total {
+    margin-top: 5px;
+  }
+  .item__title {
+    display: inline-block;
+  }
+}
+@media screen and (max-width: 490px) {
+  .wrapper__smDevice {
+    flex-direction: column;
+  }
+  .item__title {
+    font-size: var(--fs-500);
+    flex: 0.6;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     margin-top: 5px;
   }
 }

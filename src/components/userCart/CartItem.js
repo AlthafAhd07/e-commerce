@@ -8,16 +8,21 @@ const CartItem = () => {
   return (
     <div className="cart__item">
       <img src={TestImg} alt="" />
-      <div className="item__description">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet,
-        voluptates. Iure, optio consectetur? Adipisci veniam e nihil nostrum.
-      </div>
-      <div className="item__otherData">
-        <div className="price">$25</div>
-        <div className="quantity">
-          <IncDecCounter ItemCount={ItemCount} setItemCount={setItemCount} />
+      <div className="wrapper__smDevice">
+        <h1 className="item__title">product Name dafdafa</h1>
+        <div className="item__description">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet,
+          voluptates. Iure, optio consectetur? Adipisci veniam e nihil nostrum.
         </div>
-        <div className="total">$125</div>
+        <div className="item__otherData">
+          <div className="price">$25</div>
+          <div className="quantity">
+            <IncDecCounter ItemCount={ItemCount} setItemCount={setItemCount} />
+          </div>
+          <div className="total">
+            <pre>Total : </pre> $125
+          </div>
+        </div>
       </div>
     </div>
   );
