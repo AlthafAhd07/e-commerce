@@ -28,8 +28,8 @@ function App() {
       if (userAuth) {
         dispatch(login(userAuth.uid, userAuth.displayName, userAuth.email));
         getDoc(doc(db, "userCart", userAuth.uid)).then((userCart) => {
-          const productIds = userCart.data().cartItems.map((i) => i.item);
-          if (userCart.data().cartItems) {
+          const productIds = userCart?.data().cartItems?.map((i) => i.item);
+          if (userCart.data().cartItems && productIds.length > 0) {
             getDocs(
               query(
                 collection(db, "products"),

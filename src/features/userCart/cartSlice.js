@@ -32,11 +32,28 @@ export const cartSlice = createSlice({
         productCount: 0,
       };
     },
+    updateProductCount: (state, action) => {
+      state.products = state.products.map((item) => {
+        if (item.product.id === action.payload.id) {
+          return {
+            ...item,
+            count: action.payload.count,
+          };
+        } else {
+          return item;
+        }
+      });
+    },
   },
 });
 
-export const { addToCart, addMultipleToCart, clearCart, removeFromCart } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  addMultipleToCart,
+  clearCart,
+  removeFromCart,
+  updateProductCount,
+} = cartSlice.actions;
 
 export const selectCart = (state) => state.userCart;
 

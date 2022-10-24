@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./product.css";
 import { ReactComponent as CartIcon } from "../../images/shopping-cart-icon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, selectCart } from "../../features/userCart/cartSlice.js";
+import {
+  addToCart,
+  selectCart,
+  updateProductCount,
+} from "../../features/userCart/cartSlice.js";
 import IncDecCounter from "../../components/global/IncDecCount/Index";
+import { selectAuth } from "../../features/userAuth/authSlice";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import { useParams } from "react-router-dom";
+import { selectProducts } from "../../features/products/productSlice";
 const imageData = {
   // primaryColor: "green",
   images: [
@@ -34,17 +43,29 @@ const imageData = {
   ],
 };
 const Product = () => {
-  // const { id } = useParams();
+  const { id: productId } = useParams();
+  const { user } = useSelector(selectAuth);
+  const userCart = useSelector(selectCart);
+  const { products } = useSelector(selectProducts);
   const [mainImgId, setMainImgId] = useState(0);
-  const [ItemCount, setItemCount] = useState(1);
+  const trackFirstRender = useRef(0);
+
+  let currentProduct = products.filter((item) => item.id === productId)[0];
+
+  if (!!!currentProduct) {
+    console.log("currentProduct not exists in the redux state");
+  }
+
+  const productExistInCart = userCart?.products?.filter(
+    (item) => item?.product?.id === productId
+  );
+
+  const [ItemCount, setItemCount] = useState(() => {
+    return productExistInCart[0]?.count || 1;
+  });
 
   const dispatch = useDispatch();
-  const userCart = useSelector(selectCart);
-  const productId = "123456";
 
-  const ProduxtAlreadyExists = userCart.products.some(
-    (item) => item.productId === productId
-  );
   useEffect(() => {
     const getMainImagesForMobile = setTimeout(() => {
       imageData.images.map((image, index) => {
@@ -56,11 +77,43 @@ const Product = () => {
     }, [500]);
     return () => clearTimeout(getMainImagesForMobile);
   }, []);
-  function handleAddToCart() {
-    if (ProduxtAlreadyExists) {
+
+  useEffect(() => {
+    if (trackFirstRender.current < 1) {
+      trackFirstRender.current = 1;
       return;
     }
-    dispatch(addToCart({ productId, count: ItemCount }));
+    let timer = setTimeout(() => {
+      if (!!user) {
+        updateDoc(doc(db, "userCart", user.uid), {
+          cartItems: arrayRemove({
+            item: productId,
+            count: productExistInCart[0]?.count,
+          }),
+        });
+        updateDoc(doc(db, "userCart", user.uid), {
+          cartItems: arrayUnion({
+            item: productId,
+            count: ItemCount,
+          }),
+        });
+      }
+      dispatch(updateProductCount({ id: productId, count: ItemCount }));
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [ItemCount]);
+  function handleAddToCart() {
+    if (productExistInCart.length > 0) {
+      return;
+    }
+    dispatch(addToCart({ product: currentProduct, count: ItemCount }));
+    if (!!user) {
+      updateDoc(doc(db, "userCart", user.uid), {
+        cartItems: arrayUnion({ item: productId, count: ItemCount }),
+      });
+    }
   }
 
   return (
@@ -115,15 +168,16 @@ const Product = () => {
             style={{
               backgroundColor:
                 imageData?.primaryColor ||
-                (ProduxtAlreadyExists && "rgb(0 255 58)"),
+                (productExistInCart.length > 0 && "rgb(0 255 58)"),
               boxShadow:
-                ProduxtAlreadyExists && `rgb(58 243 100 / 49%) 0px 2px 8px 0px`,
+                productExistInCart.length > 0 &&
+                `rgb(58 243 100 / 49%) 0px 2px 8px 0px`,
             }}
             onClick={handleAddToCart}
             className="CartBtn"
           >
             <CartIcon className="cart__icon" fill="white" />
-            {ProduxtAlreadyExists ? "Added to Card" : "Add to cart"}
+            {productExistInCart.length > 0 ? "Added to Card" : "Add to cart"}
           </button>
         </div>
       </div>

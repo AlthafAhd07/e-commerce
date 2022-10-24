@@ -1,13 +1,24 @@
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IncDecCounter from "../../components/global/IncDecCount/Index";
-import { removeFromCart } from "../../features/userCart/cartSlice";
+import { selectAuth } from "../../features/userAuth/authSlice";
+import {
+  removeFromCart,
+  selectCart,
+  updateProductCount,
+} from "../../features/userCart/cartSlice";
+import { db } from "../../firebase";
 import { ReactComponent as CrossIcon } from "../../images/close-line-icon.svg";
 const CartItem = ({ item: { count, product }, setFullTotal }) => {
   const [itemCount, setItemCount] = useState(count);
   const oldItemCount = useRef(itemCount);
   const dispatch = useDispatch();
+  const { user } = useSelector(selectAuth);
+  const trackFirstRender = useRef(0);
+
   const price = product?.price;
+
   useEffect(() => {
     setFullTotal((old) => {
       if (oldItemCount.current < itemCount) {
@@ -22,6 +33,35 @@ const CartItem = ({ item: { count, product }, setFullTotal }) => {
     oldItemCount.current = itemCount;
     // eslint-disable-next-line
   }, [itemCount]);
+
+  useEffect(() => {
+    if (trackFirstRender.current < 1) {
+      console.log("i am ruuning");
+      trackFirstRender.current = 1;
+      return;
+    }
+    let timer = setTimeout(() => {
+      if (!!user) {
+        updateDoc(doc(db, "userCart", user.uid), {
+          cartItems: arrayRemove({
+            item: product.id,
+            count: count,
+          }),
+        });
+        updateDoc(doc(db, "userCart", user.uid), {
+          cartItems: arrayUnion({
+            item: product.id,
+            count: itemCount,
+          }),
+        });
+      }
+      dispatch(updateProductCount({ id: product.id, count: itemCount }));
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [itemCount]);
+
   useEffect(() => {
     setFullTotal((old) => old + price * count);
   }, []);
@@ -53,6 +93,11 @@ const CartItem = ({ item: { count, product }, setFullTotal }) => {
         onClick={() => {
           dispatch(removeFromCart(product?.id));
           setFullTotal((old) => old - price * itemCount);
+          if (!!user) {
+            updateDoc(doc(db, "userCart", user.uid), {
+              cartItems: arrayRemove({ item: product.id, count: itemCount }),
+            });
+          }
         }}
       />
     </div>

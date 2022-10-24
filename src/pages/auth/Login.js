@@ -13,14 +13,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { products } = useSelector(selectCart);
-  console.log(
-    products.map((i) => {
-      return {
-        count: i.count,
-        item: doc(db, `/products/${i.product.id}`),
-      };
-    })
-  );
+
   function handleSubmit(e) {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
