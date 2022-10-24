@@ -16,10 +16,14 @@ export const cartSlice = createSlice({
       });
       state.productCount += 1;
     },
+    addMultipleToCart: (state, action) => {
+      state.products = action.payload;
+      state.productCount = action.payload.length;
+    },
   },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, addMultipleToCart } = cartSlice.actions;
 
 export const selectCart = (state) => state.userCart;
 

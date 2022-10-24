@@ -3,13 +3,22 @@ import { ReactComponent as CartIcon } from "../../../images/shopping-cart-icon.s
 import { ReactComponent as ProfileLogo } from "../../../images/my-account-icon.svg";
 import "./style.css";
 import NavLink from "./NavLink";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCart } from "../../../features/userCart/cartSlice.js";
 import { Link } from "react-router-dom";
+import { logout, selectAuth } from "../../../features/userAuth/authSlice";
+import { auth } from "../../../firebase";
 
 const NavBar = () => {
   const trackBar = useRef();
+  const dispatch = useDispatch();
   const userCart = useSelector(selectCart);
+  const { user } = useSelector(selectAuth);
+
+  function HandleLogOut() {
+    auth.signOut();
+    dispatch(logout());
+  }
 
   return (
     <header className="header">
@@ -43,7 +52,22 @@ const NavBar = () => {
             </li>
           </Link>
           <li>
-            <ProfileLogo className="nav__icon profilePic" />
+            {user ? (
+              <ProfileLogo
+                className="nav__icon profilePic"
+                onClick={HandleLogOut}
+              />
+            ) : (
+              <>
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  Login
+                </Link>{" "}
+                /{" "}
+                <Link to="register" style={{ textDecoration: "none" }}>
+                  SignUp
+                </Link>
+              </>
+            )}
           </li>
         </ul>
       </nav>
