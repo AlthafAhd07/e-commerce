@@ -9,7 +9,7 @@ const Left = ({ products, setFullTotal }) => {
           <CartItem
             item={item}
             setFullTotal={setFullTotal}
-            key={item.product.id}
+            key={item?.product?.id}
           />
         );
       })}

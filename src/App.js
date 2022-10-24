@@ -1,10 +1,18 @@
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  documentId,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/global/navBar";
 import { login } from "./features/userAuth/authSlice";
-import { addToCart } from "./features/userCart/cartSlice";
+import { addMultipleToCart } from "./features/userCart/cartSlice";
 import { auth, db } from "./firebase";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -19,22 +27,32 @@ function App() {
     auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
         dispatch(login(userAuth.uid, userAuth.displayName, userAuth.email));
-        getDoc(doc(db, "userCart", userAuth.uid)).then((res) => {
-          if (!!res.data().cartItems) {
-            res.data().cartItems.forEach((i) => {
-              getDoc(i.item).then((res) => {
-                dispatch(
-                  addToCart({
-                    product: { id: res.id, ...res.data() },
-                    count: i.count,
-                  })
-                );
+        getDoc(doc(db, "userCart", userAuth.uid)).then((userCart) => {
+          const productIds = userCart.data().cartItems.map((i) => i.item);
+          if (userCart.data().cartItems) {
+            getDocs(
+              query(
+                collection(db, "products"),
+                where(documentId(), "in", productIds)
+              )
+            ).then((res) => {
+              const allProducts = [];
+              res.forEach((i) => {
+                const count = userCart
+                  .data()
+                  .cartItems.filter((item) => item.item === i.id);
+                allProducts.push({
+                  product: { id: i.id, ...i.data() },
+                  count: count[0].count,
+                });
               });
+              dispatch(addMultipleToCart(allProducts));
             });
           }
         });
       }
     });
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="App">

@@ -6,8 +6,8 @@ const SingleItem = ({ product }) => {
   const dispatch = useDispatch();
   const { products } = useSelector(selectCart);
 
-  const ItemExistsInCart = products.some(
-    (item) => item.product.id === product.id
+  const ItemExistsInCart = products?.some(
+    (item) => item?.product?.id === product?.id
   );
   function handleClick() {
     if (ItemExistsInCart) return;

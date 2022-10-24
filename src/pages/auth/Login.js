@@ -5,39 +5,35 @@ import "./style.css";
 import { auth, db } from "../../firebase.js";
 import { login } from "../../features/userAuth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addMultipleToCart,
-  addToCart,
-  selectCart,
-} from "../../features/userCart/cartSlice";
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import { selectCart } from "../../features/userCart/cartSlice";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { products } = useSelector(selectCart);
+  console.log(
+    products.map((i) => {
+      return {
+        count: i.count,
+        item: doc(db, `/products/${i.product.id}`),
+      };
+    })
+  );
   function handleSubmit(e) {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         updateDoc(doc(db, "userCart", user.uid), {
-          cartItems: arrayUnion(...products),
-        }).then(() => {
-          getDoc(doc(db, "userCart", user.uid)).then((res) => {
-            if (!!res.data().cartItems) {
-              res.data().cartItems.forEach((i) => {
-                getDoc(i.item).then((res) => {
-                  dispatch(
-                    addToCart({
-                      product: { id: res.id, ...res.data() },
-                      count: i.count,
-                    })
-                  );
-                });
-              });
-            }
-          });
+          cartItems: arrayUnion(
+            ...products.map((i) => {
+              return {
+                count: i.count,
+                item: i.product.id,
+              };
+            })
+          ),
         });
 
         dispatch(login(user.uid, user.displayName, user.email));
