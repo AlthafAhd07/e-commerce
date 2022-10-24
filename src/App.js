@@ -1,9 +1,11 @@
+import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/global/navBar";
 import { login } from "./features/userAuth/authSlice";
-import { auth } from "./firebase";
+import { addToCart } from "./features/userCart/cartSlice";
+import { auth, db } from "./firebase";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Cart from "./pages/cart/Cart";
@@ -17,6 +19,20 @@ function App() {
     auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
         dispatch(login(userAuth.uid, userAuth.displayName, userAuth.email));
+        getDoc(doc(db, "userCart", userAuth.uid)).then((res) => {
+          if (!!res.data().cartItems) {
+            res.data().cartItems.forEach((i) => {
+              getDoc(i.item).then((res) => {
+                dispatch(
+                  addToCart({
+                    product: { id: res.id, ...res.data() },
+                    count: i.count,
+                  })
+                );
+              });
+            });
+          }
+        });
       }
     });
   }, []);

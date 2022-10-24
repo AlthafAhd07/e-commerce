@@ -4,7 +4,7 @@ import { ReactComponent as ProfileLogo } from "../../../images/my-account-icon.s
 import "./style.css";
 import NavLink from "./NavLink";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCart } from "../../../features/userCart/cartSlice.js";
+import { clearCart, selectCart } from "../../../features/userCart/cartSlice.js";
 import { Link } from "react-router-dom";
 import { logout, selectAuth } from "../../../features/userAuth/authSlice";
 import { auth } from "../../../firebase";
@@ -17,6 +17,7 @@ const NavBar = () => {
 
   function HandleLogOut() {
     auth.signOut();
+    dispatch(clearCart());
     dispatch(logout());
   }
 

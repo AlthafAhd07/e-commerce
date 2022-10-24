@@ -1,0 +1,10 @@
+.home {
+  display: flex;
+  justify-content: space-around;
+  margin-inline: auto;
+  gap: 35px;
+  flex-wrap: wrap;
+  width: 85%;
+  margin-block: 50px;
+  padding-bottom: 50px;
+}

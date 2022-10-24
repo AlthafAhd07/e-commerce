@@ -1,6 +1,6 @@
 .cart__left {
   flex: 0.6;
-  background-color: hsl(0deg 0% 96% / 12%);
+  background-color: rgba(106, 100, 100, 0.12);
   overflow: hidden;
   transition: all 500ms ease-in-out;
 }
@@ -36,6 +36,7 @@
   align-items: center;
   border-radius: 15px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  position: relative;
 }
 @media screen and (max-width: 700px) {
   .cart__item {
@@ -227,4 +228,16 @@
   color: white;
   background-color: blue;
   margin-top: 5px;
+}
+.dltIcon {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+}
+.dltIcon:hover {
+  rotate: 90deg;
 }

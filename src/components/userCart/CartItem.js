@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import IncDecCounter from "../../components/global/IncDecCount/Index";
-import TestImg from "../../images/image-product-1-thumbnail.jpg";
-
-const CartItem = ({ setFullTotal }) => {
-  const [itemCount, setItemCount] = useState(1);
+import { removeFromCart } from "../../features/userCart/cartSlice";
+import { ReactComponent as CrossIcon } from "../../images/close-line-icon.svg";
+const CartItem = ({ item: { count, product }, setFullTotal }) => {
+  const [itemCount, setItemCount] = useState(count);
   const oldItemCount = useRef(itemCount);
-  const price = 23;
+  const dispatch = useDispatch();
+  const price = product?.price;
   useEffect(() => {
     setFullTotal((old) => {
       if (oldItemCount.current < itemCount) {
@@ -20,16 +22,16 @@ const CartItem = ({ setFullTotal }) => {
     oldItemCount.current = itemCount;
     // eslint-disable-next-line
   }, [itemCount]);
+  useEffect(() => {
+    setFullTotal((old) => old + price * count);
+  }, []);
 
   return (
     <div className="cart__item">
-      <img src={TestImg} alt="" />
+      <img src={product?.images[0]?.img} alt="" />
       <div className="wrapper__smDevice">
-        <h1 className="item__title">product Name dafdafa</h1>
-        <div className="item__description">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet,
-          voluptates. Iure, optio consectetur? Adipisci veniam e nihil nostrum.
-        </div>
+        <h1 className="item__title">{product?.name}</h1>
+        <div className="item__description">{product?.description}</div>
         <div className="item__otherData">
           <div className="price">{price}</div>
           <div className="quantity">
@@ -44,6 +46,15 @@ const CartItem = ({ setFullTotal }) => {
           </div>
         </div>
       </div>
+      <CrossIcon
+        className="dltIcon"
+        fill="black"
+        stroke="black"
+        onClick={() => {
+          dispatch(removeFromCart(product?.id));
+          setFullTotal((old) => old - price * itemCount);
+        }}
+      />
     </div>
   );
 };

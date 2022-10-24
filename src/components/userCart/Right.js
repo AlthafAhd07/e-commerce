@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectCart } from "../../features/userCart/cartSlice";
 import "./style.css";
-const Right = ({ fullTotal }) => {
+const Right = ({ productCount, fullTotal }) => {
   const [delivery, setDelivery] = useState(5);
-  const itemCount = 0;
   return (
     <div className="cart__right">
       <h1 className="cart__summaryTitle">Order Summary</h1>
       <div className="cart__other">
         <div className="ItemCountPrice">
           <span>
-            {itemCount} {itemCount > 1 ? "ITEMS" : "ITEM"}
+            {productCount} {productCount > 1 ? "ITEMS" : "ITEM"}
           </span>
           <span>${fullTotal}</span>
         </div>

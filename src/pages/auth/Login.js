@@ -7,6 +7,7 @@ import { login } from "../../features/userAuth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addMultipleToCart,
+  addToCart,
   selectCart,
 } from "../../features/userCart/cartSlice";
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
@@ -22,10 +23,23 @@ const Login = () => {
       .then(({ user }) => {
         updateDoc(doc(db, "userCart", user.uid), {
           cartItems: arrayUnion(...products),
+        }).then(() => {
+          getDoc(doc(db, "userCart", user.uid)).then((res) => {
+            if (!!res.data().cartItems) {
+              res.data().cartItems.forEach((i) => {
+                getDoc(i.item).then((res) => {
+                  dispatch(
+                    addToCart({
+                      product: { id: res.id, ...res.data() },
+                      count: i.count,
+                    })
+                  );
+                });
+              });
+            }
+          });
         });
-        getDoc(doc(db, "userCart", user.uid)).then((res) => {
-          dispatch(addMultipleToCart(res.data().cartItems));
-        });
+
         dispatch(login(user.uid, user.displayName, user.email));
         navigate("/");
       })
