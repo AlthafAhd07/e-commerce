@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { selectCart } from "../../features/userCart/cartSlice";
 import "./style.css";
 const Right = ({ productCount, fullTotal }) => {
   const [delivery, setDelivery] = useState(5);
@@ -12,7 +10,7 @@ const Right = ({ productCount, fullTotal }) => {
           <span>
             {productCount} {productCount > 1 ? "ITEMS" : "ITEM"}
           </span>
-          <span>${fullTotal}</span>
+          <span>${fullTotal.toFixed(2)}</span>
         </div>
         <div className="ItemShippingOption">
           <p>SHIPPING</p>
@@ -31,7 +29,7 @@ const Right = ({ productCount, fullTotal }) => {
       <div className="cart__total">
         <div className="ItemCountPrice">
           <span>SUBTOTAL</span>
-          <span>${fullTotal}</span>
+          <span>${fullTotal.toFixed(2)}</span>
         </div>
         <div className="ItemCountPrice">
           <span>DELIVERY</span>

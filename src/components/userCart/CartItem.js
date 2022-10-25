@@ -16,7 +16,7 @@ const CartItem = ({ item: { count, product }, setFullTotal }) => {
   const { user } = useSelector(selectAuth);
   const trackFirstRender = useRef(0);
 
-  const price = product?.price;
+  const price = parseFloat(product?.price);
 
   useEffect(() => {
     setFullTotal((old) => {
@@ -81,7 +81,7 @@ const CartItem = ({ item: { count, product }, setFullTotal }) => {
             />
           </div>
           <div className="total">
-            <pre>Total : </pre> <span>${price * itemCount}</span>
+            <pre>Total : </pre> <span>${(price * itemCount).toFixed(2)}</span>
           </div>
         </div>
       </div>
