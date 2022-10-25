@@ -19,35 +19,7 @@ import {
 import { db } from "../../firebase";
 import { useParams } from "react-router-dom";
 import { selectProducts } from "../../features/products/productSlice";
-const imageData = {
-  // primaryColor: "green",
-  images: [
-    {
-      id: 1,
-      img: "https://res.cloudinary.com/davg6e0yh/image/upload/v1666428070/image-product-1_xqdxbx.jpg",
-      thumbnail:
-        "https://res.cloudinary.com/davg6e0yh/image/upload/v1666428075/image-product-1-thumbnail_vkcet8.jpg",
-    },
-    {
-      id: 2,
-      img: "https://res.cloudinary.com/davg6e0yh/image/upload/v1666428098/image-product-2_jlsvyk.jpg",
-      thumbnail:
-        "https://res.cloudinary.com/davg6e0yh/image/upload/v1666428113/image-product-2-thumbnail_lw5kfu.jpg",
-    },
-    {
-      id: 3,
-      img: "https://res.cloudinary.com/davg6e0yh/image/upload/v1666428134/image-product-3_hd30kn.jpg",
-      thumbnail:
-        "https://res.cloudinary.com/davg6e0yh/image/upload/v1666428133/image-product-3-thumbnail_zkodmk.jpg",
-    },
-    {
-      id: 4,
-      img: "https://res.cloudinary.com/davg6e0yh/image/upload/v1666428178/image-product-4_ptnnmn.jpg",
-      thumbnail:
-        "https://res.cloudinary.com/davg6e0yh/image/upload/v1666428178/image-product-4-thumbnail_bazeat.jpg",
-    },
-  ],
-};
+
 const Product = () => {
   const { id: productId } = useParams();
   const { user } = useSelector(selectAuth);
@@ -82,7 +54,7 @@ const Product = () => {
 
   useEffect(() => {
     const getMainImagesForMobile = setTimeout(() => {
-      imageData.images.map((image, index) => {
+      currentProduct.images.map((image, index) => {
         if (index !== 0) {
           new Image().src = image.img;
         }
@@ -136,10 +108,10 @@ const Product = () => {
     <div className="product">
       <div className="imageGallery">
         <div className="imagePreview">
-          <img src={currentProduct.images[mainImgId].img} alt="mainImage" />
+          <img src={currentProduct?.images[mainImgId]?.img} alt="mainImage" />
         </div>
         <div className="thumbnail">
-          {currentProduct.images.map((image, index) => {
+          {currentProduct?.images?.map((image, index) => {
             return (
               <img
                 key={image.id}
@@ -159,7 +131,7 @@ const Product = () => {
       <div className="productData">
         <h6
           style={{
-            color: imageData?.primaryColor,
+            color: currentProduct?.images?.primaryColor,
           }}
         >
           SNEAKER COMPANY
@@ -178,17 +150,17 @@ const Product = () => {
           <button
             style={{
               backgroundColor:
-                imageData?.primaryColor ||
-                (productExistInCart.length > 0 && "rgb(0 255 58)"),
+                currentProduct?.images?.primaryColor ||
+                (productExistInCart?.length > 0 && "rgb(0 255 58)"),
               boxShadow:
-                productExistInCart.length > 0 &&
+                productExistInCart?.length > 0 &&
                 `rgb(58 243 100 / 49%) 0px 2px 8px 0px`,
             }}
             onClick={handleAddToCart}
             className="CartBtn"
           >
             <CartIcon className="cart__icon" fill="white" />
-            {productExistInCart.length > 0 ? "Added to Card" : "Add to cart"}
+            {productExistInCart?.length > 0 ? "Added to Card" : "Add to cart"}
           </button>
         </div>
       </div>
