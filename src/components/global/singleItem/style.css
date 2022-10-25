@@ -23,11 +23,13 @@
   font-size: var(--fs-600);
   font-weight: var(--fw-500);
   color: var(--fc-heading);
+  text-align: center;
 }
 
 .singleItem > p {
   font-size: var(--fs-500);
   margin-bottom: 13px;
+  text-align: center;
 }
 
 .singleItem > button {

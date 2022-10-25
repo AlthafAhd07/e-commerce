@@ -5,7 +5,6 @@ import IncDecCounter from "../../components/global/IncDecCount/Index";
 import { selectAuth } from "../../features/userAuth/authSlice";
 import {
   removeFromCart,
-  selectCart,
   updateProductCount,
 } from "../../features/userCart/cartSlice";
 import { db } from "../../firebase";
@@ -73,7 +72,7 @@ const CartItem = ({ item: { count, product }, setFullTotal }) => {
         <h1 className="item__title">{product?.name}</h1>
         <div className="item__description">{product?.description}</div>
         <div className="item__otherData">
-          <div className="price">{price}</div>
+          <div className="price">${price}</div>
           <div className="quantity">
             <IncDecCounter
               ItemCount={itemCount}
@@ -82,7 +81,7 @@ const CartItem = ({ item: { count, product }, setFullTotal }) => {
             />
           </div>
           <div className="total">
-            <pre>Total : </pre> <span>{price * itemCount}</span>
+            <pre>Total : </pre> <span>${price * itemCount}</span>
           </div>
         </div>
       </div>
