@@ -8,10 +8,14 @@ import {
   getAllProducts,
   selectProducts,
 } from "../features/products/productSlice";
+import { changeLoadingState } from "../features/customLoaders/loaderSlice";
 const Home = () => {
   // const [products, setProducts] = useState();
   const { products } = useSelector(selectProducts);
   const dispatch = useDispatch();
+  if (!products.length) {
+    dispatch(changeLoadingState(true));
+  }
 
   useEffect(() => {
     getDocs(collection(db, "products"))
@@ -21,6 +25,7 @@ const Home = () => {
           allProducts.unshift({ id: doc.id, ...doc.data() });
         });
         dispatch(getAllProducts(allProducts));
+        dispatch(changeLoadingState(false));
       })
       .catch((err) => {
         console.log(err);

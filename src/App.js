@@ -10,6 +10,7 @@ import {
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Spinner from "./components/global/customLoaders/Spinner";
 import NavBar from "./components/global/navBar";
 import { login } from "./features/userAuth/authSlice";
 import { addMultipleToCart } from "./features/userCart/cartSlice";
@@ -58,6 +59,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <NavBar />
+        <Spinner />
         <Routes>
           <Route path="/" element={<Home />} exact />
           <Route path="/men" element={<Men />} exact />
