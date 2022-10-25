@@ -3,11 +3,13 @@
   justify-content: center;
   align-items: center;
   height: calc(100vh - 91px);
-  background-image: url(../../images/luke-chesser-IGtutkXikuc-unsplash.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
   overflow: hidden;
+  background: rgb(39, 198, 253);
+  background: linear-gradient(
+    97deg,
+    rgba(39, 198, 253, 1) 0%,
+    rgba(140, 80, 254, 1) 100%
+  );
 }
 .auth__wrapper {
   display: flex;

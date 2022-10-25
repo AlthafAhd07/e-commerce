@@ -1,8 +1,9 @@
 .cart__left {
   flex: 0.6;
-  background-color: rgba(106, 100, 100, 0.12);
+  background-color: #f5f5f54a;
   overflow: hidden;
   transition: all 500ms ease-in-out;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 .cart__right {
   background-color: hsl(0deg 0% 96% / 12%);

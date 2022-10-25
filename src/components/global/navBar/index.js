@@ -30,7 +30,9 @@ const NavBar = () => {
           <span></span>
           <span></span>
         </div>
-        <h1 className="logo">Sneakers</h1>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <h1 className="logo">Sneakers</h1>
+        </Link>
         <ul className="nav__links nav__doggleLinks">
           <NavLink value={""} trackBar={trackBar} />
           <NavLink value={"collections"} trackBar={trackBar} />

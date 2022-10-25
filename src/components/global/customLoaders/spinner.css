@@ -5,6 +5,8 @@
   transform: translate(-50%, -50%);
   animation: InAnim 300ms ease-in-out;
   transform-origin: 0 0;
+  transition: all 300ms ease-in-out;
+  scale: 1;
 }
 
 @keyframes InAnim {
