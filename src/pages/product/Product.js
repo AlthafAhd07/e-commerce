@@ -9,7 +9,13 @@ import {
 } from "../../features/userCart/cartSlice.js";
 import IncDecCounter from "../../components/global/IncDecCount/Index";
 import { selectAuth } from "../../features/userAuth/authSlice";
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { useParams } from "react-router-dom";
 import { selectProducts } from "../../features/products/productSlice";
@@ -49,11 +55,19 @@ const Product = () => {
   const { products } = useSelector(selectProducts);
   const [mainImgId, setMainImgId] = useState(0);
   const trackFirstRender = useRef(0);
-
-  let currentProduct = products.filter((item) => item.id === productId)[0];
+  const [currentProduct, setCurrentProduct] = useState(() => {
+    return products.filter((item) => item.id === productId)[0];
+  });
 
   if (!!!currentProduct) {
     console.log("currentProduct not exists in the redux state");
+    getDoc(doc(db, "products", productId))
+      .then((res) => {
+        setCurrentProduct(res.data());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const productExistInCart = userCart?.products?.filter(
@@ -84,7 +98,7 @@ const Product = () => {
       return;
     }
     let timer = setTimeout(() => {
-      if (!!user) {
+      if (!!user && productExistInCart.length > 0) {
         updateDoc(doc(db, "userCart", user.uid), {
           cartItems: arrayRemove({
             item: productId,
@@ -99,7 +113,7 @@ const Product = () => {
         });
       }
       dispatch(updateProductCount({ id: productId, count: ItemCount }));
-    }, 1000);
+    }, 3000);
     return () => {
       clearTimeout(timer);
     };
@@ -116,14 +130,16 @@ const Product = () => {
     }
   }
 
+  if (!currentProduct) return <h1>Product Does not exists</h1>;
+
   return (
     <div className="product">
       <div className="imageGallery">
         <div className="imagePreview">
-          <img src={imageData.images[mainImgId].img} alt="mainImage" />
+          <img src={currentProduct.images[mainImgId].img} alt="mainImage" />
         </div>
         <div className="thumbnail">
-          {imageData.images.map((image, index) => {
+          {currentProduct.images.map((image, index) => {
             return (
               <img
                 key={image.id}
@@ -148,19 +164,14 @@ const Product = () => {
         >
           SNEAKER COMPANY
         </h6>
-        <h1 className="productTitle">Fall Limited Edition Sneakers</h1>
-        <p className="productDescription">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga cumque
-          quam dolores exercitationem ratione expedita veritatis id, nobis
-          ducimus tempore, laudantium, soluta cum. Impedit repudiandae nisi
-          eligendi sunt, nihil natus.
-        </p>
+        <h1 className="productTitle">{currentProduct?.name}</h1>
+        <p className="productDescription">{currentProduct?.description}</p>
         <div className="price">
           <p className="price__discounted">
-            <span>$125.00</span>
+            <span>${currentProduct?.price}</span>
             <span className="discount">50%</span>
           </p>
-          <p className="price__exact">$250.00</p>
+          <p className="price__exact">${currentProduct?.price * 2 || null}</p>
         </div>
         <div className="AddToCart">
           <IncDecCounter ItemCount={ItemCount} setItemCount={setItemCount} />
