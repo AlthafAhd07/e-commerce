@@ -37,7 +37,9 @@ const Right = ({ productCount, fullTotal }) => {
         </div>
         <div className="ItemCountPrice">
           <span>TOTAL</span>
-          <span>${parseFloat(delivery) + parseFloat(fullTotal)} </span>
+          <span>
+            ${(parseFloat(delivery) + parseFloat(fullTotal)).toFixed(2)}
+          </span>
         </div>
         <button>CHECKOUT</button>
       </div>
