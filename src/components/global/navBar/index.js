@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,10 +16,22 @@ import NavLink from "./NavLink";
 const NavBar = () => {
   const { user } = useSelector(selectAuth);
   const userCart = useSelector(selectCart);
+  const [toggleState, setToggleState] = useState(false);
 
   const trackBar = useRef();
+  const navRef = useRef();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleToogler = (e) => {
+      if (!navRef.current.contains(e.target) && toggleState) {
+        setToggleState((old) => !old);
+      }
+    };
+    window.addEventListener("click", handleToogler);
+    return () => window.removeEventListener("click", handleToogler);
+  }, [toggleState]);
 
   function HandleLogOut() {
     auth.signOut();
@@ -28,14 +40,19 @@ const NavBar = () => {
   }
 
   return (
-    <header className="header">
+    <header className="header" ref={navRef}>
       <nav className="nav">
-        <input type="checkbox" className="nav__checkbox" />
-        <div className="nav__toggler">
+        <button
+          className="nav__toggler"
+          onClick={() => {
+            setToggleState((old) => !old);
+          }}
+          data-toggle={toggleState}
+        >
           <span></span>
           <span></span>
           <span></span>
-        </div>
+        </button>
         <h1 className="logo">
           <Link
             to="/"
@@ -51,7 +68,7 @@ const NavBar = () => {
           <NavLink value={"women"} trackBar={trackBar} />
           <NavLink value={"about"} trackBar={trackBar} />
         </ul>
-        <ul className="nav__smallDevice">
+        <ul className="nav__smallDevice" data-toggle={toggleState}>
           <li>
             <Link to="/">Home</Link>
           </li>
