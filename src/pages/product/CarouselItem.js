@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const CarouselItem = ({ product }) => {
-  console.log(product);
   return (
     <div className="carouselItem">
       <Link to={`/product/${product.id}`}>

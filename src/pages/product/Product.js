@@ -21,6 +21,10 @@ import {
   updateProductCount,
 } from "../../features/userCart/cartSlice.js";
 import { selectProducts } from "../../features/products/productSlice";
+import {
+  changeLoadingState,
+  selectLoading,
+} from "../../features/customLoaders/loaderSlice";
 
 import IncDecCounter from "../../components/global/IncDecCount/Index";
 import CarouselItem from "./CarouselItem";
@@ -31,6 +35,7 @@ const Product = () => {
   const { user } = useSelector(selectAuth);
   const userCart = useSelector(selectCart);
   const { products } = useSelector(selectProducts);
+  const { loading } = useSelector(selectLoading);
 
   const [mainImgId, setMainImgId] = useState(0);
   const [currentProduct, setCurrentProduct] = useState(() => {
@@ -46,15 +51,20 @@ const Product = () => {
 
   const dispatch = useDispatch();
 
-  if (!!!currentProduct) {
-    getDoc(doc(db, "products", productId))
-      .then((res) => {
-        setCurrentProduct(res.data());
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  useEffect(() => {
+    if (!!!currentProduct) {
+      dispatch(changeLoadingState(true));
+      getDoc(doc(db, "products", productId))
+        .then((res) => {
+          dispatch(changeLoadingState(false));
+          setCurrentProduct(res.data());
+        })
+        .catch((err) => {
+          dispatch(changeLoadingState(false));
+          return;
+        });
+    }
+  }, []);
 
   const productExistInCart = userCart?.products?.filter(
     (item) => item?.product?.id === productId
@@ -114,7 +124,20 @@ const Product = () => {
     }
   }
 
-  if (!currentProduct) return <h1>Product Does not exists</h1>;
+  if (!currentProduct)
+    return (
+      <h1
+        style={{
+          marginLeft: "30px",
+          position: "relative",
+          top: "30px",
+          fontSize: "2rem",
+          fontWeight: "500",
+        }}
+      >
+        {!loading && "Product Does not exists"}
+      </h1>
+    );
 
   return (
     <div className="product__wrapper">
@@ -127,7 +150,7 @@ const Product = () => {
             {currentProduct?.images?.map((image, index) => {
               return (
                 <img
-                  key={image.id}
+                  key={image.thumbnail}
                   onClick={() => setMainImgId(index)}
                   src={image.thumbnail}
                   alt="thumbnail"
@@ -178,12 +201,16 @@ const Product = () => {
           </div>
         </div>
       </div>
-      {!!suggested.length && (
+      {suggested.length > 0 && (
         <div className="suggested">
           <h1>Products related to this item</h1>
           <div className="carousel">
             {suggested.map((product) => {
-              return <CarouselItem key={product.id} product={product} />;
+              if (product.id === productId) {
+                return null;
+              } else {
+                return <CarouselItem key={product.id} product={product} />;
+              }
             })}
           </div>
         </div>

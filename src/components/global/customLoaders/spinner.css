@@ -19,7 +19,7 @@
   }
 }
 
-.SpinnerWrapper[data-outLoad="false"] {
+.SpinnerWrapper[data-outload="false"] {
   animation: loadingOutAnim 400ms ease-in-out;
 }
 
