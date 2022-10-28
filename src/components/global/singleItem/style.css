@@ -11,6 +11,15 @@
   border-radius: 20px;
   transition: all 100ms ease-in-out;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  animation: inItem 600ms ease-in-out;
+}
+@keyframes inItem {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 .singleItem:hover {
   scale: 1.01;
