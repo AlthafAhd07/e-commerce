@@ -3,6 +3,10 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import { selectAuth } from "../../../features/userAuth/authSlice";
+function getFile(fileName) {
+  if (!fileName) return;
+  import(`../../../pages/${fileName}`);
+}
 
 const NavLink = ({ value, trackBar }) => {
   const { user } = useSelector(selectAuth);
@@ -68,7 +72,15 @@ const NavLink = ({ value, trackBar }) => {
     }
   }
   return (
-    <Link to={`/${value}`} style={{ textDecoration: "none" }}>
+    <Link
+      to={`/${value}`}
+      style={{ textDecoration: "none" }}
+      onMouseOver={() => {
+        console.log(value.charAt(0).toUpperCase() + value.slice(1));
+        // console.log(value.toCapitalize());
+        getFile(value.charAt(0).toUpperCase() + value.slice(1));
+      }}
+    >
       <li
         onMouseEnter={mouseEnterFun}
         onMouseLeave={mouseLeaveFun}

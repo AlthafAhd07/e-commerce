@@ -25,7 +25,7 @@ const NavBar = () => {
 
   useEffect(() => {
     const handleToogler = (e) => {
-      if (!navRef.current.contains(e.target) && toggleState) {
+      if (!navRef?.current?.contains(e.target) && toggleState) {
         setToggleState((old) => !old);
       }
     };

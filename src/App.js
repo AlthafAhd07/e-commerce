@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -21,15 +22,17 @@ import { login } from "./features/userAuth/authSlice";
 import Spinner from "./components/global/customLoaders/Spinner";
 import NavBar from "./components/global/navBar";
 import Home from "./pages/Home";
-import Men from "./pages/Men";
-import Women from "./pages/Women";
-import Product from "./pages/product/Product";
-import Collections from "./pages/collections";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import Cart from "./pages/cart/Cart";
+
 import Toast from "./components/global/alertToast/Toast";
 import useDelayUnmount from "./hooks/useDelayUnmount";
+
+const Men = React.lazy(() => import("./pages/Men"));
+const Women = React.lazy(() => import("./pages/Women"));
+const Product = React.lazy(() => import("./pages/product/Product"));
+const Collections = React.lazy(() => import("./pages/Collections"));
+const Login = React.lazy(() => import("./pages/auth/Login"));
+const Register = React.lazy(() => import("./pages/auth/Register"));
+const Cart = React.lazy(() => import("./pages/cart/Cart"));
 
 function App() {
   const { loading } = useSelector(selectLoading);
@@ -73,20 +76,22 @@ function App() {
   }, []);
   return (
     <div className="App">
-      <BrowserRouter>
-        <NavBar />
-        {!!showLoading && <Spinner />}
-        <Routes>
-          <Route path="/" element={<Home />} exact />
-          <Route path="/collections" element={<Collections />} exact />
-          <Route path="/men" element={<Men />} exact />
-          <Route path="/women" element={<Women />} exact />
-          <Route path="/product/:id" element={<Product />} exact />
-          <Route path="/cart/:id" element={<Cart />} exact />
-          <Route path="/login" element={<Login />} exact />
-          <Route path="/register" element={<Register />} exact />
-        </Routes>
-      </BrowserRouter>
+      <React.Suspense>
+        <BrowserRouter>
+          <NavBar />
+          {!!showLoading && <Spinner />}
+          <Routes>
+            <Route path="/" element={<Home />} exact />
+            <Route path="/collections" element={<Collections />} exact />
+            <Route path="/men" element={<Men />} exact />
+            <Route path="/women" element={<Women />} exact />
+            <Route path="/product/:id" element={<Product />} exact />
+            <Route path="/cart/:id" element={<Cart />} exact />
+            <Route path="/login" element={<Login />} exact />
+            <Route path="/register" element={<Register />} exact />
+          </Routes>
+        </BrowserRouter>
+      </React.Suspense>
       {showToast && <Toast />}
     </div>
   );
