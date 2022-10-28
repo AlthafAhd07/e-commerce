@@ -1,3 +1,7 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import {
   collection,
   doc,
@@ -7,25 +11,27 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { auth, db } from "./firebase";
+import { selectLoading } from "./features/customLoaders/loaderSlice";
+import { addMultipleToCart } from "./features/userCart/cartSlice";
+import { login } from "./features/userAuth/authSlice";
+
 import Spinner from "./components/global/customLoaders/Spinner";
 import NavBar from "./components/global/navBar";
-import { selectLoading } from "./features/customLoaders/loaderSlice";
-import { login } from "./features/userAuth/authSlice";
-import { addMultipleToCart } from "./features/userCart/cartSlice";
-import { auth, db } from "./firebase";
+import Home from "./pages/Home";
+import Men from "./pages/Men";
+import Women from "./pages/Women";
+import Product from "./pages/product/Product";
+import Collections from "./pages/collections";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Cart from "./pages/cart/Cart";
-import Home from "./pages/Home";
-import Men from "./pages/Men";
-import Women from "./pages/Men";
-import Product from "./pages/product/Product";
+
 function App() {
-  const dispatch = useDispatch();
   const { loading } = useSelector(selectLoading);
+
+  const dispatch = useDispatch();
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
@@ -65,6 +71,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} exact />
+          <Route path="/collections" element={<Collections />} exact />
           <Route path="/men" element={<Men />} exact />
           <Route path="/women" element={<Women />} exact />
           <Route path="/product/:id" element={<Product />} exact />

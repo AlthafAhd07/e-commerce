@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+
 import { selectAuth } from "../../../features/userAuth/authSlice";
 
 const NavLink = ({ value, trackBar }) => {
-  const location = useLocation();
-
   const { user } = useSelector(selectAuth);
+
+  const location = useLocation();
 
   const linkRef = useRef();
 

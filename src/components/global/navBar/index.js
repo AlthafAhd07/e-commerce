@@ -1,19 +1,25 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import "./navbar.css";
 import { ReactComponent as CartIcon } from "../../../images/shopping-cart-icon.svg";
 import { ReactComponent as ProfileLogo } from "../../../images/my-account-icon.svg";
-import "./style.css";
-import NavLink from "./NavLink";
-import { useDispatch, useSelector } from "react-redux";
-import { clearCart, selectCart } from "../../../features/userCart/cartSlice.js";
-import { Link } from "react-router-dom";
-import { logout, selectAuth } from "../../../features/userAuth/authSlice";
+
 import { auth } from "../../../firebase";
 
+import { logout, selectAuth } from "../../../features/userAuth/authSlice";
+import { clearCart, selectCart } from "../../../features/userCart/cartSlice.js";
+
+import NavLink from "./NavLink";
+
 const NavBar = () => {
-  const trackBar = useRef();
-  const dispatch = useDispatch();
-  const userCart = useSelector(selectCart);
   const { user } = useSelector(selectAuth);
+  const userCart = useSelector(selectCart);
+
+  const trackBar = useRef();
+
+  const dispatch = useDispatch();
 
   function HandleLogOut() {
     auth.signOut();
@@ -30,9 +36,14 @@ const NavBar = () => {
           <span></span>
           <span></span>
         </div>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <h1 className="logo">Sneakers</h1>
-        </Link>
+        <h1 className="logo">
+          <Link
+            to="/"
+            style={{ textDecoration: "none", color: "hsl(220, 13%, 13%)" }}
+          >
+            Sneakers
+          </Link>
+        </h1>
         <ul className="nav__links nav__doggleLinks">
           <NavLink value={""} trackBar={trackBar} />
           <NavLink value={"collections"} trackBar={trackBar} />
@@ -41,11 +52,21 @@ const NavBar = () => {
           <NavLink value={"about"} trackBar={trackBar} />
         </ul>
         <ul className="nav__smallDevice">
-          <li>Home</li>
-          <li>Collections</li>
-          <li>Men</li>
-          <li>Women</li>
-          <li>About</li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/collections">Collections</Link>
+          </li>
+          <li>
+            <Link to="/men">Men</Link>
+          </li>
+          <li>
+            <Link to="/women">Women</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
         </ul>
         <ul className="nav__links">
           <Link to="/cart/itsTheId">
@@ -62,12 +83,19 @@ const NavBar = () => {
               />
             ) : (
               <>
-                <Link to="/login" style={{ textDecoration: "none" }}>
+                <Link
+                  className="auth__loginLink"
+                  to="/login"
+                  style={{ textDecoration: "none" }}
+                >
                   Login
                 </Link>{" "}
-                /{" "}
-                <Link to="register" style={{ textDecoration: "none" }}>
-                  SignUp
+                <Link
+                  className="auth__registerLink"
+                  to="/register"
+                  style={{ textDecoration: "none" }}
+                >
+                  / SignUp
                 </Link>
               </>
             )}

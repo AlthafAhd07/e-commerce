@@ -1,6 +1,7 @@
 import React from "react";
+
+import "./userCart.css";
 import CartItem from "./CartItem";
-import "./style.css";
 const Left = ({ products, setFullTotal }) => {
   return (
     <div className="cart__left">

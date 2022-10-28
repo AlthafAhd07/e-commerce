@@ -1,16 +1,19 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import "./style.css";
-import { addToCart, selectCart } from "../../../features/userCart/cartSlice";
-import { selectAuth } from "../../../features/userAuth/authSlice";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
-const SingleItem = ({ product }) => {
-  const dispatch = useDispatch();
-  const { products } = useSelector(selectCart);
-  const { user } = useSelector(selectAuth);
+import { useDispatch, useSelector } from "react-redux";
 
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+
+import "./style.css";
+
+import { db } from "../../../firebase";
+import { selectAuth } from "../../../features/userAuth/authSlice";
+import { addToCart, selectCart } from "../../../features/userCart/cartSlice";
+const SingleItem = ({ product }) => {
+  const { user } = useSelector(selectAuth);
+  const { products } = useSelector(selectCart);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const ItemExistsInCart = products?.some(

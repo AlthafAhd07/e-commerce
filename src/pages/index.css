@@ -1,10 +1,11 @@
 .home {
   display: flex;
   justify-content: space-around;
-  margin-inline: auto;
-  gap: 35px;
   flex-wrap: wrap;
+  gap: 35px;
+
   width: 85%;
+  margin-inline: auto;
   margin-block: 50px;
   padding-bottom: 50px;
 }

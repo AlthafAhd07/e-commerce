@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./style.css";
+
+import "./userCart.css";
 const Right = ({ productCount, fullTotal }) => {
   const [delivery, setDelivery] = useState(5);
   return (

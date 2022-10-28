@@ -1,18 +1,23 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import "./style.css";
+
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+
 import { auth, db } from "../../firebase.js";
 import { login } from "../../features/userAuth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { selectCart } from "../../features/userCart/cartSlice";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 const Login = () => {
+  const { products } = useSelector(selectCart);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { products } = useSelector(selectCart);
 
   function handleSubmit(e) {
     e.preventDefault();

@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./style.css";
-import { auth, db } from "../../firebase.js";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
+
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+
+import "./style.css";
+
+import { auth, db } from "../../firebase.js";
+import { selectCart } from "../../features/userCart/cartSlice";
 import { login } from "../../features/userAuth/authSlice";
 import { doc, setDoc } from "firebase/firestore";
-import { selectCart } from "../../features/userCart/cartSlice";
 
 const Register = () => {
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState({});
   const { products } = useSelector(selectCart);
+  const [userData, setUserData] = useState({});
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   function handleInputChange(e) {

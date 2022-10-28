@@ -1,23 +1,28 @@
 import React, { useEffect } from "react";
-import SingleItem from "../components/global/singleItem/SingleItem";
-import "./index.css";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase.js";
 import { useDispatch, useSelector } from "react-redux";
+
+import { collection, getDocs } from "firebase/firestore";
+
+import "./index.css";
+
+import { db } from "../firebase.js";
 import {
   getAllProducts,
   selectProducts,
 } from "../features/products/productSlice";
 import { changeLoadingState } from "../features/customLoaders/loaderSlice";
+
+import SingleItem from "../components/global/singleItem/SingleItem";
+
 const Home = () => {
-  // const [products, setProducts] = useState();
   const { products } = useSelector(selectProducts);
+
   const dispatch = useDispatch();
-  if (!products.length) {
-    dispatch(changeLoadingState(true));
-  }
 
   useEffect(() => {
+    if (!products.length) {
+      dispatch(changeLoadingState(true));
+    }
     getDocs(collection(db, "products"))
       .then((res) => {
         const allProducts = [];

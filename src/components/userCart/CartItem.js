@@ -1,20 +1,26 @@
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import IncDecCounter from "../../components/global/IncDecCount/Index";
+
+import { ReactComponent as CrossIcon } from "../../images/close-line-icon.svg";
+
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+
+import { db } from "../../firebase";
 import { selectAuth } from "../../features/userAuth/authSlice";
 import {
   removeFromCart,
   updateProductCount,
 } from "../../features/userCart/cartSlice";
-import { db } from "../../firebase";
-import { ReactComponent as CrossIcon } from "../../images/close-line-icon.svg";
+
+import IncDecCounter from "../../components/global/IncDecCount/Index";
 const CartItem = ({ item: { count, product }, setFullTotal }) => {
-  const [itemCount, setItemCount] = useState(count);
-  const oldItemCount = useRef(itemCount);
-  const dispatch = useDispatch();
   const { user } = useSelector(selectAuth);
+  const [itemCount, setItemCount] = useState(count);
+
+  const oldItemCount = useRef(itemCount);
   const trackFirstRender = useRef(0);
+
+  const dispatch = useDispatch();
 
   const price = parseFloat(product?.price);
 
