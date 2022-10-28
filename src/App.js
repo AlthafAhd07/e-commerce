@@ -14,6 +14,7 @@ import {
 
 import { auth, db } from "./firebase";
 import { selectLoading } from "./features/customLoaders/loaderSlice";
+import { selectAlert } from "./features/alert/alertSlice";
 import { addMultipleToCart } from "./features/userCart/cartSlice";
 import { login } from "./features/userAuth/authSlice";
 
@@ -27,11 +28,17 @@ import Collections from "./pages/collections";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Cart from "./pages/cart/Cart";
+import Toast from "./components/global/alertToast/Toast";
+import useDelayUnmount from "./hooks/useDelayUnmount";
 
 function App() {
   const { loading } = useSelector(selectLoading);
+  const { toast } = useSelector(selectAlert);
 
   const dispatch = useDispatch();
+
+  // custom hook for unmount animation
+  const showToast = useDelayUnmount(toast.visible, 900);
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
@@ -68,7 +75,6 @@ function App() {
       <BrowserRouter>
         <NavBar />
         {!!loading && <Spinner />}
-
         <Routes>
           <Route path="/" element={<Home />} exact />
           <Route path="/collections" element={<Collections />} exact />
@@ -80,6 +86,7 @@ function App() {
           <Route path="/register" element={<Register />} exact />
         </Routes>
       </BrowserRouter>
+      {showToast && <Toast />}
     </div>
   );
 }
