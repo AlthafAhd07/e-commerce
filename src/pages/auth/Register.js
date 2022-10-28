@@ -10,10 +10,17 @@ import { auth, db } from "../../firebase.js";
 import { selectCart } from "../../features/userCart/cartSlice";
 import { login } from "../../features/userAuth/authSlice";
 import { doc, setDoc } from "firebase/firestore";
+import { showToast } from "../../features/alert/alertSlice";
+import { selectLoading } from "../../features/customLoaders/loaderSlice";
 
 const Register = () => {
   const { products } = useSelector(selectCart);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,12 +35,38 @@ const Register = () => {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    if (
-      userData.password !== userData.confirmPassword ||
-      userData.username.length < 4
-    )
+    if (userData.username?.length < 4) {
+      dispatch(
+        showToast({
+          visible: true,
+          msg: "Username should be at least 4 characters",
+          type: "error",
+        })
+      );
       return;
+    }
+    if (userData.password?.length < 6) {
+      dispatch(
+        showToast({
+          visible: true,
+          msg: "password should be at least 6 characters",
+          type: "error",
+        })
+      );
+      return;
+    }
+    if (userData.password !== userData?.confirmPassword) {
+      dispatch(
+        showToast({
+          visible: true,
+          msg: "Confirm password Does Not match",
+          type: "error",
+        })
+      );
+      return;
+    }
 
+    dispatch(selectLoading(true));
     createUserWithEmailAndPassword(auth, userData.email, userData.password)
       .then((userAuth) => {
         setDoc(doc(db, "userCart", userAuth.user.uid), {
@@ -46,12 +79,40 @@ const Register = () => {
             dispatch(
               login(userAuth.user.uid, userData.username, userAuth.user.email)
             );
+            dispatch(selectLoading(false));
+            dispatch(
+              showToast({
+                visible: true,
+                msg: "Account created Successfully.",
+                type: "success",
+              })
+            );
             navigate("/");
           });
         });
       })
       .catch((err) => {
-        alert(err);
+        dispatch(selectLoading(false));
+        switch (err.code) {
+          case "auth/email-already-in-use":
+            dispatch(
+              showToast({
+                visible: true,
+                msg: "E-mail Already taken",
+                type: "error",
+              })
+            );
+            break;
+
+          default:
+            dispatch(
+              showToast({
+                visible: true,
+                msg: err.code,
+                type: "error",
+              })
+            );
+        }
       });
   }
 

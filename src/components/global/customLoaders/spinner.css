@@ -19,6 +19,19 @@
   }
 }
 
+.SpinnerWrapper[data-outLoad="false"] {
+  animation: loadingOutAnim 400ms ease-in-out;
+}
+
+@keyframes loadingOutAnim {
+  0% {
+    scale: 1;
+  }
+  100% {
+    scale: 0;
+  }
+}
+
 @keyframes ldio-gqiu1itk7k {
   0% {
     opacity: 1;
@@ -27,6 +40,7 @@
     opacity: 0;
   }
 }
+
 .ldio-gqiu1itk7k div {
   position: absolute;
   left: 94.56px;

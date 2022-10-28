@@ -10,6 +10,8 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase.js";
 import { login } from "../../features/userAuth/authSlice";
 import { selectCart } from "../../features/userCart/cartSlice";
+import { showToast } from "../../features/alert/alertSlice";
+import { changeLoadingState } from "../../features/customLoaders/loaderSlice";
 const Login = () => {
   const { products } = useSelector(selectCart);
 
@@ -21,6 +23,18 @@ const Login = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (email.length < 1 || password.length < 1) {
+      dispatch(
+        showToast({
+          visible: true,
+          msg: "Please fill all fields",
+          type: "error",
+          time: 3000,
+        })
+      );
+      return;
+    }
+    dispatch(changeLoadingState(true));
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         updateDoc(doc(db, "userCart", user.uid), {
@@ -36,9 +50,50 @@ const Login = () => {
 
         dispatch(login(user.uid, user.displayName, user.email));
         navigate("/");
+        dispatch(
+          showToast({
+            visible: true,
+            msg: "Login Success",
+            type: "success",
+            time: 3000,
+          })
+        );
+        dispatch(changeLoadingState(false));
       })
       .catch((err) => {
-        alert(err);
+        dispatch(changeLoadingState(false));
+        switch (err.code) {
+          case "auth/wrong-password":
+            dispatch(
+              showToast({
+                visible: true,
+                msg: "Wrong password",
+                type: "error",
+                time: 3000,
+              })
+            );
+            break;
+          case "auth/user-not-found":
+            dispatch(
+              showToast({
+                visible: true,
+                msg: "User Not Found",
+                type: "error",
+                time: 3000,
+              })
+            );
+            break;
+
+          default:
+            dispatch(
+              showToast({
+                visible: true,
+                msg: err.code,
+                type: "error",
+                time: 3000,
+              })
+            );
+        }
       });
   }
   return (

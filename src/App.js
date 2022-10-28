@@ -39,6 +39,7 @@ function App() {
 
   // custom hook for unmount animation
   const showToast = useDelayUnmount(toast.visible, 900);
+  const showLoading = useDelayUnmount(loading, 350);
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
@@ -74,7 +75,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <NavBar />
-        {!!loading && <Spinner />}
+        {!!showLoading && <Spinner />}
         <Routes>
           <Route path="/" element={<Home />} exact />
           <Route path="/collections" element={<Collections />} exact />

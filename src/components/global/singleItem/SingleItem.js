@@ -9,6 +9,7 @@ import "./style.css";
 import { db } from "../../../firebase";
 import { selectAuth } from "../../../features/userAuth/authSlice";
 import { addToCart, selectCart } from "../../../features/userCart/cartSlice";
+import { showToast } from "../../../features/alert/alertSlice";
 const SingleItem = ({ product }) => {
   const { user } = useSelector(selectAuth);
   const { products } = useSelector(selectCart);
@@ -20,7 +21,23 @@ const SingleItem = ({ product }) => {
     (item) => item?.product?.id === product?.id
   );
   function handleClick() {
-    if (ItemExistsInCart) return;
+    if (ItemExistsInCart) {
+      dispatch(
+        showToast({
+          visible: true,
+          msg: "Product Already exists...",
+          type: "err",
+        })
+      );
+      return;
+    }
+    dispatch(
+      showToast({
+        visible: true,
+        msg: "Added to Cart",
+        type: "success",
+      })
+    );
     dispatch(
       addToCart({
         product: product,
