@@ -15,7 +15,7 @@ This is an e-commerce project.
 - custom loadin animations
 - custom error and succes message toasts
 
-### `Some techniques use to improve the the performance`
+### `Some techniques used to improve the the performance`
 
 - Debouncing
 - Lazy loading - ( preload the page when user hover the relevent link )
