@@ -76,8 +76,6 @@ const NavLink = ({ value, trackBar }) => {
       to={`/${value}`}
       style={{ textDecoration: "none" }}
       onMouseOver={() => {
-        console.log(value.charAt(0).toUpperCase() + value.slice(1));
-        // console.log(value.toCapitalize());
         getFile(value.charAt(0).toUpperCase() + value.slice(1));
       }}
     >

@@ -43,6 +43,7 @@ const NavBar = () => {
     <header className="header" ref={navRef}>
       <nav className="nav">
         <button
+          aria-label="nav__toggle__button"
           className="nav__toggler"
           onClick={() => {
             setToggleState((old) => !old);
@@ -61,6 +62,7 @@ const NavBar = () => {
             Sneakers
           </Link>
         </h1>
+
         <ul className="nav__links nav__doggleLinks">
           <NavLink value={""} trackBar={trackBar} />
           <NavLink value={"collections"} trackBar={trackBar} />
@@ -86,7 +88,7 @@ const NavBar = () => {
           </li>
         </ul>
         <ul className="nav__links">
-          <Link to="/cart/itsTheId">
+          <Link aria-label="userCart" to="/cart/itsTheId">
             <li className="cartIcon">
               <CartIcon stroke="black" fill="white" className="nav__icon" />
               {userCart.productCount > 0 && <p>{userCart.productCount}</p>}
