@@ -1,6 +1,6 @@
 # Welcome
 
-This is an e-commerce project.
+This is an e-commerce project.[Live Url](https://e-com-byalthaf.netlify.app/)
 
 ## Technologies used here
 
